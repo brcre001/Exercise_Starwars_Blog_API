@@ -11,14 +11,14 @@ db = SQLAlchemy()
 
 # class Users(db.Model)
 
-class Users(db.Model):
-    # __tablename__ = 'users'
+class User(db.Model):
     id = db.Column(Integer, primary_key=True)
     first_name = db.Column(String(250), nullable=False)
     last_name = db.Column(String(250), nullable=False)
     email = db.Column(String(250), nullable=False)
     password = db.Column(String(80), nullable=False)
     join_date = db.Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
+    favorite = db.relationship('Favorite')
 
     def __repr__(self):
         return '<Users %r>' % self.first_name
@@ -33,8 +33,7 @@ class Users(db.Model):
             "join_date": self.join_date
         }
 
-class Characters(db.Model):
-    # __tablename__ = 'characters'
+class Character(db.Model):
     id = db.Column(Integer, primary_key=True)
     name = db.Column(String(250), nullable=False)
     height = db.Column(String(80), nullable=False)
@@ -47,7 +46,6 @@ class Characters(db.Model):
     created = db.Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
     edited = db.Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
     homeworld = db.Column(String(250), nullable=False)
-    url = db.Column(String(250), nullable=False)
 
     def __repr__(self):
         return '<Characters %r>' % self.name
@@ -65,12 +63,10 @@ class Characters(db.Model):
             "gender": self.gender,
             "created": self.created,
             "edited": self.edited,
-            "homeworld": self.homeworld,
-            "url": self.url
+            "homeworld": self.homeworld
         }
 
-class Planets(db.Model):
-    # __tablename__ = 'planets'
+class Planet(db.Model):
     id = db.Column(Integer, primary_key=True)
     name = db.Column(String(250), nullable=False)
     diameter = db.Column(Integer, nullable=False)
@@ -83,7 +79,6 @@ class Planets(db.Model):
     surface_water = db.Column(String(250), nullable=False)
     created = db.Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
     edited = db.Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
-    url = db.Column(String(250), nullable=False)
 
     def __repr__(self):
         return '<Planets %r>' % self.name
@@ -101,12 +96,10 @@ class Planets(db.Model):
             "terrain": self.terrain,
             "surface_water": self.surface_water,
             "created": self.created,
-            "edited": self.edited,
-            "url": self.url
+            "edited": self.edited
         }
 
-class Vehicles(db.Model):
-    # __tablename__ = 'vehicles'
+class Vehicle(db.Model):
     id = db.Column(Integer, primary_key=True)
     name = db.Column(String(250), nullable=False)
     model = db.Column(String(250), nullable=False)
@@ -124,7 +117,6 @@ class Vehicles(db.Model):
     pilots = db.Column(String(250), nullable=False)
     created = db.Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
     edited = db.Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
-    url = db.Column(String(250), nullable=False)
 
     def __repr__(self):
         return '<Vehicles %r>' % self.name
@@ -147,14 +139,12 @@ class Vehicles(db.Model):
             "consumables": self.consumables,
             "pilots": self.pilots,
             "created": self.created,
-            "edited": self.edited,
-            "url": self.url
+            "edited": self.edited
         }
 
-class Favorites(db.Model):
-    # __tablename__ = 'favorites'
+class Favorite(db.Model):
     id = db.Column(Integer, primary_key=True)
-    user_id = db.Column(ForeignKey('users.id'))
+    user_id = db.Column(ForeignKey('user.id'))
     favorite_name = db.Column(String(250), nullable=False)
 
     def __repr__(self):
