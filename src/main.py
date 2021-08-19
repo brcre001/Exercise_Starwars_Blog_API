@@ -41,19 +41,19 @@ def handle_hello():
 
 @app.route('/people')
 def get_all_people():
-    people = Characters.query.all()
+    people = Character.query.all()
     people = list(map(lambda person: person.serialize(), people))
     return jsonify(people)
 
 @app.route('/planets')
 def get_all_planets():
-    planets = Planets.query.all()
+    planets = Planet.query.all()
     planets = list(map(lambda planet: planet.serialize(), planets))
     return jsonify(planets)
 
 @app.route('/vehicles')
 def get_all_vehicles():
-    vehicles = Vehicles.query.all()
+    vehicles = Vehicle.query.all()
     vehicles = list(map(lambda vehicle: vehicle.serialize(), vehicles))
     return jsonify(vehicles)
 

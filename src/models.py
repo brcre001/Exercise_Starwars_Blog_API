@@ -12,13 +12,14 @@ db = SQLAlchemy()
 # class Users(db.Model)
 
 class User(db.Model):
-    id = db.Column(Integer, primary_key=True)
-    first_name = db.Column(String(250), nullable=False)
-    last_name = db.Column(String(250), nullable=False)
-    email = db.Column(String(250), nullable=False)
-    password = db.Column(String(80), nullable=False)
-    join_date = db.Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
-    favorite = db.relationship('Favorite')
+    __tablename__ = 'user'
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(250), nullable=False)
+    last_name = db.Column(db.String(250), nullable=False)
+    email = db.Column(db.String(250), nullable=False)
+    password = db.Column(db.String(80), nullable=False)
+    join_date = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
+    favorite_planets = db.relationship('Favorite', back_populates="planet")
 
     def __repr__(self):
         return '<Users %r>' % self.first_name
@@ -34,18 +35,19 @@ class User(db.Model):
         }
 
 class Character(db.Model):
-    id = db.Column(Integer, primary_key=True)
-    name = db.Column(String(250), nullable=False)
-    height = db.Column(String(80), nullable=False)
-    mass = db.Column(String(80), nullable=False)
-    hair_color = db.Column(String(80), nullable=True)
-    skin_color = db.Column(String(80), nullable=True)
-    eye_color = db.Column(String(80), nullable=True)
-    birth_year = db.Column(String(250), nullable=False)
-    gender = db.Column(String(250), nullable=True)
-    created = db.Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
-    edited = db.Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
-    homeworld = db.Column(String(250), nullable=False)
+    __tablename__ = 'character'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(250), nullable=False)
+    height = db.Column(db.String(80), nullable=False)
+    mass = db.Column(db.String(80), nullable=False)
+    hair_color = db.Column(db.String(80), nullable=True)
+    skin_color = db.Column(db.String(80), nullable=True)
+    eye_color = db.Column(db.String(80), nullable=True)
+    birth_year = db.Column(db.String(250), nullable=False)
+    gender = db.Column(db.String(250), nullable=True)
+    created = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
+    edited = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
+    homeworld = db.Column(db.String(250), nullable=False)
 
     def __repr__(self):
         return '<Characters %r>' % self.name
@@ -67,18 +69,19 @@ class Character(db.Model):
         }
 
 class Planet(db.Model):
-    id = db.Column(Integer, primary_key=True)
-    name = db.Column(String(250), nullable=False)
-    diameter = db.Column(Integer, nullable=False)
-    rotation_period = db.Column(Integer, nullable=False)
-    orbital_period = db.Column(Integer, nullable=False)
-    gravity = db.Column(String(250), nullable=False)
-    population = db.Column(Integer, nullable=False)
-    climate = db.Column(String(250), nullable=False)
-    terrain = db.Column(String(250), nullable=False)
-    surface_water = db.Column(String(250), nullable=False)
-    created = db.Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
-    edited = db.Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(250), nullable=False)
+    diameter = db.Column(db.Integer, nullable=False)
+    rotation_period = db.Column(db.Integer, nullable=False)
+    orbital_period = db.Column(db.Integer, nullable=False)
+    gravity = db.Column(db.String(250), nullable=False)
+    population = db.Column(db.Integer, nullable=False)
+    climate = db.Column(db.String(250), nullable=False)
+    terrain = db.Column(db.String(250), nullable=False)
+    surface_water = db.Column(db.String(250), nullable=False)
+    created = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
+    edited = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
+    users = db.relationship("Favorite", back_populates="user")
 
     def __repr__(self):
         return '<Planets %r>' % self.name
@@ -100,23 +103,24 @@ class Planet(db.Model):
         }
 
 class Vehicle(db.Model):
-    id = db.Column(Integer, primary_key=True)
-    name = db.Column(String(250), nullable=False)
-    model = db.Column(String(250), nullable=False)
-    starship_class = db.Column(String(250), nullable=False)
-    manufacturer = db.Column(String(250), nullable=False)
-    cost_in_credits = db.Column(Integer, nullable=False)
-    length = db.Column(Integer, nullable=False)
-    crew = db.Column(Integer, nullable=False)
-    passengers = db.Column(Integer, nullable=False)
-    max_atmosphering_speed = db.Column(Integer, nullable=False)
-    hyperdrive_rating = db.Column(String(250), nullable=False)
-    MGLT = db.Column(Integer, nullable=False)
-    cargo_capacity = db.Column(Integer, nullable=False)
-    consumables = db.Column(String(250), nullable=False)
-    pilots = db.Column(String(250), nullable=False)
-    created = db.Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
-    edited = db.Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
+    __tablename__ = 'vehicle'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(250), nullable=False)
+    model = db.Column(db.String(250), nullable=False)
+    starship_class = db.Column(db.String(250), nullable=False)
+    manufacturer = db.Column(db.String(250), nullable=False)
+    cost_in_credits = db.Column(db.Integer, nullable=False)
+    length = db.Column(db.Integer, nullable=False)
+    crew = db.Column(db.Integer, nullable=False)
+    passengers = db.Column(db.Integer, nullable=False)
+    max_atmosphering_speed = db.Column(db.Integer, nullable=False)
+    hyperdrive_rating = db.Column(db.String(250), nullable=False)
+    MGLT = db.Column(db.Integer, nullable=False)
+    cargo_capacity = db.Column(db.Integer, nullable=False)
+    consumables = db.Column(db.String(250), nullable=False)
+    pilots = db.Column(db.String(250), nullable=False)
+    created = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
+    edited = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
 
     def __repr__(self):
         return '<Vehicles %r>' % self.name
@@ -143,9 +147,13 @@ class Vehicle(db.Model):
         }
 
 class Favorite(db.Model):
-    id = db.Column(Integer, primary_key=True)
-    user_id = db.Column(ForeignKey('user.id'))
-    favorite_name = db.Column(String(250), nullable=False)
+    __tablename__ = 'favorite'
+    id = db.Column(db.Integer, primary_key=True)
+    favorite_name = db.Column(db.String(250), nullable=False)
+    user_id = db.Column(db.ForeignKey('user.id'))
+    planet_id = db.Column(db.ForeignKey('planet.id'))
+    user = db.relationship("Planet", back_populates="users")
+    planet = db.relationship("User", back_populates="favorite_planets")
 
     def __repr__(self):
         return '<Favorites %r>' % self.favorite_name
@@ -157,5 +165,3 @@ class Favorite(db.Model):
             "favorite_name": self.favorite_name
         }
 
-## Draw from SQLAlchemy base
-# render_er(Base, 'diagram.png')
