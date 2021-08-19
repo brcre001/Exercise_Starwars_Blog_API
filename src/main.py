@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 import os
-from flask import Flask, request, jsonify, url_for
+from flask import Flask, request, jsonify, url_for, json
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from flask_cors import CORS
@@ -30,32 +30,59 @@ def handle_invalid_usage(error):
 def sitemap():
     return generate_sitemap(app)
 
+# All the GET Methods
 @app.route('/user', methods=['GET'])
-def handle_hello():
-
-    response_body = {
-        "msg": "Hello, this is your GET /user response "
-    }
-
-    return jsonify(response_body), 200
+def get_user():
+    users = User.query.all()
+    users = list(map(lambda user: user.serialize(), users))
+    return jsonify(users), 200
 
 @app.route('/people')
 def get_all_people():
     people = Character.query.all()
     people = list(map(lambda person: person.serialize(), people))
-    return jsonify(people)
+    return jsonify(people), 200
 
 @app.route('/planets')
 def get_all_planets():
     planets = Planet.query.all()
     planets = list(map(lambda planet: planet.serialize(), planets))
-    return jsonify(planets)
+    return jsonify(planets), 200
 
 @app.route('/vehicles')
 def get_all_vehicles():
     vehicles = Vehicle.query.all()
     vehicles = list(map(lambda vehicle: vehicle.serialize(), vehicles))
-    return jsonify(vehicles)
+    return jsonify(vehicles), 200
+
+@app.route('/favorites')
+def get_all_favorites():
+    favorites = Favorite.query.all()
+    favorites = list(map(lambda favorite: favorite.serialize(), favorites))
+    return jsonify(favorites), 200
+
+# All the PUT Methods
+@app.route('/user', methods=['POST'])
+def post_user():
+    new_user = User(email="my_super@email.com", first_name="mysupername", last_name="mysuperlastname", password="password1")
+    db.session.add(new_user)
+    db.session.commit()
+    return jsonify(new_user.serialize())
+
+# @app.route('/favorite', methods=['POST'])
+# def change_favorites():
+#     request_data = request.data
+#     body = json.loads(request_data)
+#     if body is None:
+#         return "This is an Error, body is empty", 400
+#     if body['user_id'] is None and body['planet_id'] is None:
+#         return "This is an Error, missing id", 400
+#     new_favorite = Favorite(user_id=body['user_id'], planet_id=body['planet_id'])
+#     db.session.add(new_favorite)
+#     db.session.commit()
+#     return jsonify(new_favorite.serialize())
+
+
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

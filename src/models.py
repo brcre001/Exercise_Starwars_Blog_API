@@ -148,8 +148,8 @@ class Vehicle(db.Model):
 
 class Favorite(db.Model):
     __tablename__ = 'favorite'
-    id = db.Column(db.Integer, primary_key=True)
-    favorite_name = db.Column(db.String(250), nullable=False)
+    # Usually use ID for a uniqure represenation of the table
+    # Not needed in this case
     user_id = db.Column(db.ForeignKey('user.id'))
     planet_id = db.Column(db.ForeignKey('planet.id'))
     user = db.relationship("Planet", back_populates="users")
