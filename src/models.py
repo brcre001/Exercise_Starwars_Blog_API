@@ -19,7 +19,7 @@ class User(db.Model):
     email = db.Column(db.String(250), nullable=False)
     password = db.Column(db.String(80), nullable=False)
     join_date = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
-    favorite_planets = db.relationship('Favorite', back_populates="planet")
+    # favorite_planets = db.relationship('Favorite', back_populates="planet")
 
     def __repr__(self):
         return '<Users %r>' % self.first_name
@@ -81,7 +81,7 @@ class Planet(db.Model):
     surface_water = db.Column(db.String(250), nullable=False)
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
     edited = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
-    users = db.relationship("Favorite", back_populates="user")
+    # users = db.relationship("Favorite", back_populates="user")
 
     def __repr__(self):
         return '<Planets %r>' % self.name
@@ -150,10 +150,12 @@ class Favorite(db.Model):
     __tablename__ = 'favorite'
     # Usually use ID for a uniqure represenation of the table
     # Not needed in this case
+    id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.ForeignKey('user.id'))
-    planet_id = db.Column(db.ForeignKey('planet.id'))
-    user = db.relationship("Planet", back_populates="users")
-    planet = db.relationship("User", back_populates="favorite_planets")
+    favorite_name = db.Column(db.String(120), nullable=False)
+    # planet_id = db.Column(db.ForeignKey('planet.id'))
+    # user = db.relationship("Planet", back_populates="users")
+    # planet = db.relationship("User", back_populates="favorite_planets")
 
     def __repr__(self):
         return '<Favorites %r>' % self.favorite_name
@@ -162,6 +164,7 @@ class Favorite(db.Model):
         return {
             "id": self.id,
             "user_id": self.user_id,
+            # "planet_id": self.planet_id
             "favorite_name": self.favorite_name
         }
 
