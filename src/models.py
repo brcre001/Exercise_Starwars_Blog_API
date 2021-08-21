@@ -71,16 +71,16 @@ class Character(db.Model):
 class Planet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(250), nullable=False)
-    diameter = db.Column(db.Integer, nullable=False)
-    rotation_period = db.Column(db.Integer, nullable=False)
-    orbital_period = db.Column(db.Integer, nullable=False)
-    gravity = db.Column(db.String(250), nullable=False)
-    population = db.Column(db.Integer, nullable=False)
-    climate = db.Column(db.String(250), nullable=False)
-    terrain = db.Column(db.String(250), nullable=False)
-    surface_water = db.Column(db.String(250), nullable=False)
-    created = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
-    edited = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
+    # diameter = db.Column(db.Integer, nullable=False)
+    # rotation_period = db.Column(db.Integer, nullable=False)
+    # orbital_period = db.Column(db.Integer, nullable=False)
+    # gravity = db.Column(db.String(250), nullable=False)
+    # population = db.Column(db.Integer, nullable=False)
+    # climate = db.Column(db.String(250), nullable=False)
+    # terrain = db.Column(db.String(250), nullable=False)
+    # surface_water = db.Column(db.String(250), nullable=False)
+    # created = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
+    edited = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=True)
     # users = db.relationship("Favorite", back_populates="user")
 
     def __repr__(self):
@@ -90,15 +90,15 @@ class Planet(db.Model):
         return {
             "id": self.id,
             "name": self.name,
-            "diameter": self.diameter,
-            "rotation_period": self.rotation_period,
-            "orbital_period": self.orbital_period,
-            "gravity": self.gravity,
-            "population": self.population,
-            "climate": self.climate,
-            "terrain": self.terrain,
-            "surface_water": self.surface_water,
-            "created": self.created,
+            # "diameter": self.diameter,
+            # "rotation_period": self.rotation_period,
+            # "orbital_period": self.orbital_period,
+            # "gravity": self.gravity,
+            # "population": self.population,
+            # "climate": self.climate,
+            # "terrain": self.terrain,
+            # "surface_water": self.surface_water,
+            # "created": self.created,
             "edited": self.edited
         }
 
