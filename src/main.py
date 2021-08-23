@@ -44,17 +44,35 @@ def get_all_people():
     people = list(map(lambda person: person.serialize(), people))
     return jsonify(people), 200
 
+@app.route('/people/<int:position>')
+def get_a_person(position):
+    person = Character.query.all()
+    person = person[position].serialize()
+    return jsonify(person), 200
+
 @app.route('/planet')
 def get_all_planets():
     planets = Planet.query.all()
     planets = list(map(lambda planet: planet.serialize(), planets))
     return jsonify(planets), 200
 
+@app.route('/planet/<int:position>')
+def get_a_planet(position):
+    planet = Planet.query.all()
+    planet = planet[position].serialize()
+    return jsonify(planet), 200
+
 @app.route('/vehicle')
 def get_all_vehicles():
     vehicles = Vehicle.query.all()
     vehicles = list(map(lambda vehicle: vehicle.serialize(), vehicles))
     return jsonify(vehicles), 200
+
+@app.route('/vehicle/<int:position>')
+def get_a_vehicle(position):
+    vehicle = Vehicle.query.all()
+    vehicle = vehicle[position].serialize()
+    return jsonify(vehicle), 200
 
 @app.route('/favorite')
 def get_all_favorites():
