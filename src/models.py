@@ -38,16 +38,12 @@ class Character(db.Model):
     __tablename__ = 'character'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(250), nullable=False)
-    height = db.Column(db.String(80), nullable=False)
-    mass = db.Column(db.String(80), nullable=False)
     hair_color = db.Column(db.String(80), nullable=True)
     skin_color = db.Column(db.String(80), nullable=True)
     eye_color = db.Column(db.String(80), nullable=True)
     birth_year = db.Column(db.String(250), nullable=False)
     gender = db.Column(db.String(250), nullable=True)
-    created = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
     edited = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
-    homeworld = db.Column(db.String(250), nullable=False)
 
     def __repr__(self):
         return '<Characters %r>' % self.name
@@ -56,8 +52,6 @@ class Character(db.Model):
         return {
             "id": self.id,
             "name": self.name,
-            "height": self.height,
-            "mass": self.mass,
             "hair_color": self.hair_color,
             "skin_color": self.skin_color,
             "eye_color": self.eye_color,
@@ -65,21 +59,15 @@ class Character(db.Model):
             "gender": self.gender,
             "created": self.created,
             "edited": self.edited,
-            "homeworld": self.homeworld
         }
 
 class Planet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(250), nullable=False)
-    # diameter = db.Column(db.Integer, nullable=False)
-    # rotation_period = db.Column(db.Integer, nullable=False)
-    # orbital_period = db.Column(db.Integer, nullable=False)
-    # gravity = db.Column(db.String(250), nullable=False)
-    # population = db.Column(db.Integer, nullable=False)
-    # climate = db.Column(db.String(250), nullable=False)
-    # terrain = db.Column(db.String(250), nullable=False)
-    # surface_water = db.Column(db.String(250), nullable=False)
-    # created = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
+    orbital_period = db.Column(db.Integer, nullable=False)
+    gravity = db.Column(db.String(250), nullable=False)
+    population = db.Column(db.Integer, nullable=False)
+    climate = db.Column(db.String(250), nullable=False)
     edited = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=True)
     # users = db.relationship("Favorite", back_populates="user")
 
@@ -90,15 +78,10 @@ class Planet(db.Model):
         return {
             "id": self.id,
             "name": self.name,
-            # "diameter": self.diameter,
-            # "rotation_period": self.rotation_period,
-            # "orbital_period": self.orbital_period,
-            # "gravity": self.gravity,
-            # "population": self.population,
-            # "climate": self.climate,
-            # "terrain": self.terrain,
-            # "surface_water": self.surface_water,
-            # "created": self.created,
+            "orbital_period": self.orbital_period,
+            "gravity": self.gravity,
+            "population": self.population,
+            "climate": self.climate,
             "edited": self.edited
         }
 
@@ -107,20 +90,11 @@ class Vehicle(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(250), nullable=False)
     model = db.Column(db.String(250), nullable=False)
-    starship_class = db.Column(db.String(250), nullable=False)
     manufacturer = db.Column(db.String(250), nullable=False)
     cost_in_credits = db.Column(db.Integer, nullable=False)
     length = db.Column(db.Integer, nullable=False)
-    crew = db.Column(db.Integer, nullable=False)
-    passengers = db.Column(db.Integer, nullable=False)
-    max_atmosphering_speed = db.Column(db.Integer, nullable=False)
-    hyperdrive_rating = db.Column(db.String(250), nullable=False)
-    MGLT = db.Column(db.Integer, nullable=False)
     cargo_capacity = db.Column(db.Integer, nullable=False)
-    consumables = db.Column(db.String(250), nullable=False)
-    pilots = db.Column(db.String(250), nullable=False)
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
-    edited = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
 
     def __repr__(self):
         return '<Vehicles %r>' % self.name
@@ -130,19 +104,10 @@ class Vehicle(db.Model):
             "id": self.id,
             "name": self.name,
             "model": self.model,
-            "startship_class": self.starship_class,
             "manufacturer": self.manufacturer,
             "cost_in_credits": self.cost_in_credits,
             "length": self.length,
-            "crew": self.crew,
-            "passengers": self.passengers,
-            "max_atmosphering_speed": self.max_atmosphering_speed,
-            "hyperdrive_rating": self.hyperdrive_rating,
-            "MGLT": self.MGLT,
             "cargo_capacity": self.cargo_capacity,
-            "consumables": self.consumables,
-            "pilots": self.pilots,
-            "created": self.created,
             "edited": self.edited
         }
 
