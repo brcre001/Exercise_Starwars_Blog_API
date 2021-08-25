@@ -84,10 +84,21 @@ def get_all_favorites():
 @app.route('/planet', methods=['POST'])
 def create_planet():
     request_data = request.get_json()
-    planet = Planet(name=request_data['name'])
+    if 'orbital_period' in request_data:
+        planet = Planet(name=request_data['name'], orbital_period=request_data['orbital_period'], gravity=request_data['gravity'], population=request_data['population'], climate=request_data['climate'])
+    else:
+        return "This is a wrong request", 400
     db.session.add(planet)
     db.session.commit()
     return jsonify(planet.serialize())
+
+@app.route('/user', methods=['POST'])
+def create_user():
+    request_data = request.get_json()
+    new_user = User(first_name=request_data['first_name'], last_name=request_data['last_name'], email=request_data['email'], password=request_data['password'])
+    db.session.add(new_user)
+    db.session.commit()
+    return jsonify(new_user.serialize())
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

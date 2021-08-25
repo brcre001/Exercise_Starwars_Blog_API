@@ -57,7 +57,6 @@ class Character(db.Model):
             "eye_color": self.eye_color,
             "birth_year": self.birth_year,
             "gender": self.gender,
-            "created": self.created,
             "edited": self.edited,
         }
 
