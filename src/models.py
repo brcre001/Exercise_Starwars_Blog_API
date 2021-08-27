@@ -19,7 +19,9 @@ class User(db.Model):
     email = db.Column(db.String(250), nullable=False)
     password = db.Column(db.String(80), nullable=False)
     join_date = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
-    # favorite_planets = db.relationship('Favorite', back_populates="planet")
+    favorite_character = db.relationship('FavoriteCharacter', back_populates="character")
+    favorite_planet = db.relationship('FavoritePlanet', back_populates="planet")
+    favorite_vehicle = db.relationship('FavoriteVehicle', back_populates="vehicle")
 
     def __repr__(self):
         return '<Users %r>' % self.first_name
@@ -44,6 +46,7 @@ class Character(db.Model):
     birth_year = db.Column(db.String(250), nullable=False)
     gender = db.Column(db.String(250), nullable=True)
     edited = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
+    users = db.relationship("FavoriteCharacter", back_populates="user")
 
     def __repr__(self):
         return '<Characters %r>' % self.name
@@ -68,7 +71,7 @@ class Planet(db.Model):
     population = db.Column(db.Integer, nullable=False)
     climate = db.Column(db.String(250), nullable=False)
     edited = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=True)
-    # users = db.relationship("Favorite", back_populates="user")
+    users = db.relationship("FavoritePlanet", back_populates="user")
 
     def __repr__(self):
         return '<Planets %r>' % self.name
@@ -94,6 +97,7 @@ class Vehicle(db.Model):
     length = db.Column(db.Integer, nullable=False)
     cargo_capacity = db.Column(db.Integer, nullable=False)
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
+    users = db.relationship("FavoriteVehicle", back_populates="user")
 
     def __repr__(self):
         return '<Vehicles %r>' % self.name
@@ -110,25 +114,56 @@ class Vehicle(db.Model):
             "edited": self.edited
         }
 
-class Favorite(db.Model):
-    __tablename__ = 'favorite'
-    # Usually use ID for a uniqure represenation of the table
-    # Not needed in this case
+class FavoriteCharacter(db.Model):
+    __tablename__ = 'favorite-character'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.ForeignKey('user.id'))
-    favorite_name = db.Column(db.String(120), nullable=False)
-    # planet_id = db.Column(db.ForeignKey('planet.id'))
-    # user = db.relationship("Planet", back_populates="users")
-    # planet = db.relationship("User", back_populates="favorite_planets")
+    character_id = db.Column(db.ForeignKey('character.id'))
+    user = db.relationship("Character", back_populates="users")
+    character = db.relationship("User", back_populates="favorite_character")
 
     def __repr__(self):
-        return '<Favorites %r>' % self.favorite_name
+        return '<Favorite Character%r>' % self.favorite_name
 
     def serialize(self):
         return {
             "id": self.id,
             "user_id": self.user_id,
-            # "planet_id": self.planet_id
-            "favorite_name": self.favorite_name
+            "character_id": self.character_id
         }
 
+class FavoritePlanet(db.Model):
+    __tablename__ = 'favorite-planet'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.ForeignKey('user.id'))
+    planet_id = db.Column(db.ForeignKey('planet.id'))
+    user = db.relationship("Planet", back_populates="users")
+    planet = db.relationship("User", back_populates="favorite_planet")
+
+    def __repr__(self):
+        return '<Favorite Planet%r>' % self.favorite_name
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "planet_id": self.planet_id
+        }
+
+class FavoriteVehicle(db.Model):
+    __tablename__ = 'favorite-vehicle'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.ForeignKey('user.id'))
+    vehicle_id = db.Column(db.ForeignKey('vehicle.id'))
+    user = db.relationship("Vehicle", back_populates="users")
+    vehicle = db.relationship("User", back_populates="favorite_vehicle")
+
+    def __repr__(self):
+        return '<Favorite Vehicle%r>' % self.favorite_name
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "vehicle_id": self.vehicle_id
+        }
