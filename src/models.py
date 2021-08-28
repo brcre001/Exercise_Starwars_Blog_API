@@ -24,7 +24,7 @@ class User(db.Model):
     favorite_vehicle = db.relationship('FavoriteVehicle', back_populates="user")
 
     def __repr__(self):
-        return '<Users %r>' % self.first_name
+        return self.first_name
 
     def serialize(self):
         return {
