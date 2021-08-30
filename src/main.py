@@ -155,25 +155,26 @@ def create_vehicle():
 
 # POST Methods for Creating Favorites
 
-@app.route('/user/<int:user_id>/favorite/people/<int:character_id>', methods=["POST"])
-def add_fav(user_id, character_id):
+@app.route('/user/favorite/people/<int:character_id>', methods=["POST"])
+@jwt_required()
+def add_fav(character_id):
+    user_id = get_jwt_identity()
+    character = FavoriteCharacter.query.filter_by(character_id=character_id, user_id=user_id).first()
+    if character.character_id == character_id and character.user_id == user_id:
+        raise APIException("This favorite character already exists for this user", status_code=400)
     fav = FavoriteCharacter(
         user_id = user_id,
         character_id = character_id
     )
-    character = FavoriteCharacter.query.filter_by(character_id=character_id, user_id=user_id).first()
-    character = character.serialize()
-    if character['character_id'] == character_id and character['user_id'] == user_id:
-        return "This favorite character already exists for this user", 400
     db.session.add(fav)
     db.session.commit()
     return jsonify(fav.serialize())
 
-@app.route('/user/<user_id>/favorite/people')
-def get_favorite_character(user_id):
-    fav = FavoriteCharacter.query.get(user_id)
-    fav = list(map(lambda person: person.serialize(), fav))
-    return jsonify(fav), 200
+# @app.route('/user/<user_id>/favorite/people')
+# def get_favorite_character(user_id):
+#     fav = FavoriteCharacter.query.get(user_id)
+#     fav = list(map(lambda person: person.serialize(), fav))
+#     return jsonify(fav), 200
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
